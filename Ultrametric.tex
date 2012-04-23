@@ -1,6 +1,7 @@
 \documentclass{llncs}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{enumerate}
 \usepackage{amssymb,amsmath}
 
 \begin{document}
@@ -31,17 +32,47 @@ R\= usi\c n\v s Freivalds}
 
 \begin{abstract}  
 We introduce a notion of ultrametric finite automata using $p$-adic numbers to describe random branching of the process of computation. These automata have properties similar to the properties of probabilistic automata but complexity of probabilistic automata and complexity of ultrametric automata can differ very much.
-TODO
 \end{abstract} 
 
 
 
 \section{Introduction} 
-%TODO: kaut ko sarakstiit / sakopeet no tiem 2 rakstiem 
+
+Pascal and Fermat believed that every event of indeterminism can be described by a real number between 0 and 1 called 
+{\em probability}. Quantum physics introduced a description in terms of complex numbers called {\em amplitude of 
+probabilities} and later in terms of probabilistic combinations of amplitudes most conveniently described by {\em density
+matrices}.
+
+String theory \cite{VVZ95}, chemistry \cite{K06} and molecular biology \cite{DD09,Kh97} have introduced $p$-adic numbers to describe
+measures of indeterminism. 
+
+There were no difficulties to implement probabilistic automata and algorithms practically. Quantum computation \cite{H01}  has made a considerable
+theoretical progress but practical implementation has met considerable difficulties. However, prototypes of quantum computers exist, some
+quantum algorithms are implemented on these prototypes, quantum cryptography is already practically used. Some people are skeptical concerning
+practicality of the initial spectacular promises of quantum computation but nobody can deny the existence of quantum computation.
+
+We consider a new type of indeterministic algorithms called {\em ultrametric} algorithms. They are very similar to probabilistic algorithms but while probabilistic algorithms use real numbers $r$ with $0 \leq r \leq 1$ as parameters, ultrametric algorithms use {\em p-adic} numbers as the parameters.
+Slightly simplifying the description of the definitions one can say that ultrametric algorithms are the same probabilistic algorithms, only the interpretation of the probabilities is different. 
+
+Our choice of $p$-adic numbers instead of real numbers is not quite arbitrary. In 1916 Alexander Ostrowski 
+proved that any non-trivial absolute value on the rational numbers $Q$ is equivalent to either the usual real absolute value or a $p$-adic absolute value.
+This result shows that using $p$-adic numbers is not merely one of many possibilities to generalize the definition of deterministic algorithms but rather the only remaining possibility not yet explored.
+
+Moreover, Helmut Hasse's local-global principle
+ states that certain types of equations have a rational solution if and only if they have a solution in the real numbers and in the p-adic numbers for each prime $p$.
+
+There are many distinct $p$-adic absolute values corresponding to the many prime numbers $p$. These absolute values are traditionally  called {\em ultrametric}. 
+Absolute values are needed to consider {\em distances} among objects. We have used to rational and irrational numbers as measures for distances, and there is a psychological difficulty to imagine that something else can be used instead of irrational numbers.
+However, there is an important feature that distincts $p$-adic numbers from real numbers. Real numbers (both rational and irrational) are linearly ordered.
+$p$-adic numbers cannot be linearly ordered. This is why {\em valuations} of $p$-adic numbers are considered. 
+
+The situation is similar in Quantum Computation. Quantum amplitudes are complex numbers which also cannot be linearly ordered. The counterpart of valuation for quantum algorithms is {\em measurement} translating a complex number $a + bi$ into a real number $a^2 + b^2$. Valuations of $p$-adic numbers are rational numbers.
+
+Ultrametric finite automata and ultrametric Turing machines are reasonably similar to probabilistic finite automata and Turing machines. 
 
 \section{$p$-adic numbers}
 
-Let $p$ be an arbitrary prime number. A $p$-adic number is a natural number between $0$ and $p-1$ (inclusive). A $p$-adic integer is by definition a sequence $(a_i)_{i \in N}$ of $p$-adic digits. We write this conventionally as
+Let $p$ be an arbitrary prime number. A $p$-adic digit is a natural number between $0$ and $p-1$ (inclusive). A $p$-adic integer is by definition a sequence $(a_i)_{i \in N}$ of $p$-adic digits. We write this conventionally as
 $$
 \cdots a_i \cdots  a_2 a_1 a_0
 $$
@@ -111,7 +142,7 @@ A set $X$ together with a metric $d$ is called a {\em metric space}. The same se
 {\em Norm} of an element $x \in X$ is the distance from $0$:
 \begin{enumerate}
 \item $\parallel x \parallel = 0$ if and only if $x = 0$,\\
-\item $\parallel x.y \parallel = \parallel x \parallel . \parallel xy \parallel $,\\
+\item $\parallel x \cdot y \parallel = \parallel x \parallel \cdot \parallel y \parallel $,\\
 \item $\parallel x+y \parallel  \leq \parallel x \parallel  + \parallel y \parallel $.
 \end{enumerate}
 
@@ -141,20 +172,181 @@ $|x|_p$ = \{
 
 To make the equivalence of both definitions clearer, we say that the valuation of a $p$-adic number $(a_i)$ is the greatest $i_0$ such that $a_i = 0$ for all $i < i_0$. With this terminology, a $p$-adic integer is exactly a $p$-adic number with non negative valuation. And a small $p$-adic integer (one which ends in 0) is one whose valuation is (strictly) positive. It is not hard to check that this definition coincides with the aforementioned one for integers, hence for rationals. As for rationals, we define the $p$-adic absolute value and distance by $|\alpha |_p = p^{- ord_p \alpha }$. Note that the $p$-adic absolute value of a $p$-adic number is a real number (it is also a $p$-adic, and in fact a rational, but ought not to be considered as such).
 
-Every rational number is a $p$-adic integer for some prime number $p$. The nature of irrational numbers is more complicated. For instance, $\sqrt{2}$ just does not exist as a $p$-adic number. On the other hand, there is a of continuum of $p$-adic numbers that are not real numbers. Also, there is a continuum of $p_1$-adic numbers not being $p_2$-adic numbers, and vice versa.
+Every rational number is a $p$-adic integer for some prime number $p$. The nature of irrational numbers is more complicated. For instance, $\sqrt{2}$ just does not exist as a $p$-adic number. On the other hand, there is a of continuum of $p$-adic numbers that are not real numbers. Also, for different primes $p_1$, $p_2$ there is a continuum of $p_1$-adic numbers not being $p_2$-adic numbers, and vice versa.
 
-\section{Results}
+\section{$p$-adic automata}
 
-%TODO: veel teoreemas
+
+The notion of $p$-adic numbers widely used in mathematics but not so much in Computer Science. The aim of our next sections is to show that the notion of ultrametric automata and ultrametric Turing machines is natural. 
+
+In mathematics, a stochastic matrix  is a matrix used to describe the transitions of a Markov chain. A {\em right stochastic matrix}  is a square matrix each of whose rows consists of nonnegative real numbers, with each row summing to 1. A {\em stochastic vector} is a vector whose elements consist of nonnegative real numbers which sum to 1. The {\em finite probabilistic automaton} is defined as an extension of a non-deterministic finite automaton $(Q,\Sigma,\delta,q_0,F)$,  with the initial state $q_0$ replaced by a stochastic vector giving the probability of the automaton being in a given initial state, and with stochastic matrices corresponding to each symbol in the input alphabet describing the state transition probabilities. It is important to note that if $A$ is the stochastic matrix corresponding to the input symbol $a$ and $B$ is the stochastic matrix corresponding to the input symbol $b$, then the product $AB$ describes the state transition probabilities when the automaton reads the input word $ab$. Additionally, the probabilistic automaton has a threshold $\lambda $ being a real number between 0 and 1. If the probabilistic automaton has only one {\em accepting state} then the input word $x$ is said to be accepted if after reading $x$ the probability of the accepting state has a probability exceeding $\lambda $. If there are several accepting states, the word $x$ is said to be accepted the total of probabilities of the accepting states  exceeds $\lambda $.
+
+Ultrametric automata are defined exactly in the same way as probabilistic automata, only the parameters called {\em probabilities of transition}  from one state to another one are real numbers between 0 and 1 in probabilistic automata, and they are $p$-adic numbers called {\em amplitudes} in the ultrametric automata. Formulas to calculate the amplitudes after one, two, three, $\cdots $ steps of computation are exactly the same as the formulas to calculate the probabilities in the probabilistic automata. At the beginning of the work, the states of the automaton get {\em initial amplitudes} being $p$-adic numbers. When reading the current symbol of the input word, the automaton changes the amplitudes of all the states according to the transition matrix corresponding to this input symbol. 
+After reading the input word, the {\em measurement} is performed, and the  amplitudes of all the states are transformed into the $p$-valuations of these amplitudes. The valuations are real numbers and it is possible to compare whether or not the valuation exceed the threshold $\lambda $.
+
+Paavo Turakainen considered various generalizations of finite probabilistic automata in 1969 and proved that there is no need to demand in cases of probabilistic branchings that total of probabilities for all possible continuations equal 1 \cite{T69}. He defined generalized probabilistic finite automata where the "probabilities" can be arbitrary real numbers, and that languages recognizable by these generalized probabilistic finite automata are the same as for ordinary probabilistic finite automata. Hence we also allow usage of all possible $p$-adic numbers in $p$-ultrametric machines.
+
+However, it is needed to note that if there is only one accepting state then the possible probabilities of acceptance are discrete values $0, p^1, p^{-1}, p^2, p^{-2}, p^3, p^{-3}, \cdots $. Hence there is no natural counterpart of {\em isolated cut-point} or {\em bounded error} for ultrametric machines. On the other hand, a counterpart of Turakainen's theorem for isolated cut-point still does not exist. We also did not succeed to prove such a theorem for ultrametric automata. Most probably, there are certain objective difficulties.
+
+
+
+\begin{definition}
+A square matrix with elements being $p$-adic numbers is called {\bf balanced} if for arbitrary row of the matrix the product of $p$-norms of the elements equals 1.
+\end{definition}
+
+\begin{definition}
+A finite ultrametric automaton is called {\bf balanced} if all the matrices in its definition are balanced.
+\end{definition}
 
 \begin{theorem}
-For every $n>0$ there exists a language $L_n$ such that every deterministic finite automaton recognizing $L_n$ needs at least $2^n$ states, but there is an Ultrametric automaton recognizing $L_n$ with $2 n$ states.
+If a language $M$ can be recognized by a finite ultrametric automaton then $M$ can be recognized also by a balanced finite ultrametric automaton.
+\end{theorem}
+
+{\bf Proof.} For every state of the automaton we add its duplicate. If the given state has an amplitude $\gamma $ then its duplicate has the amplitude $\frac{1}{\gamma }$. \qed
+ 
+
+\begin{definition}
+A balanced finite ultrametric automaton is called {\bf regulated} if there exist constants $c > 0$ and $\lambda $ such that for arbitrary input word $x$ the norm 
+$\lambda -c < \mid \gamma \mid _p < \lambda +c$. 
+\end{definition}
+
+We show a gap between state complexity of deterministic and ultrametric automata.
+
+Let $w \in \left\{ 0, 1, \ldots, k-1 \right\} ^ m$.
+We consider two operations:
+\begin{enumerate}[a)]
+  \item a cyclic shift: $f_a \left( w_1, w_2, \ldots, w_{m} \right) = \left( w_{m}, w_1, w_2, \ldots, w_{m-1} \right)$.
+  \item increasing the first element: $f_b \left( w_1, w_2, \ldots, w_{m} \right) = \left( \left( w_1 + 1 \right) mod \; k, w_2, \ldots, w_{m} \right)$.
+\end{enumerate}
+
+
+Let $x \in \left\{ a, b \right\} ^n$. We define $f_{x_1 x_2 \ldots x_n} \left( w \right) = f_{x_n} \left( \cdots f_{x_2} \left( f_{x_1} \left( w \right) \right) \cdots \right)$.
+
+We consider the following language
+$$
+L_{k,m} = \left\{ x \in \left\{ a, b \right\}^* \left| f_x(0^m) = 0^m \right.  \right\}
+$$
+
+
+\begin{theorem}
+Every deterministic finite automaton recognizing $L_{k,m}$ needs at least $k^m$ states.
 \end{theorem}
 \begin{proof}
-%TODO
+For every words $x_1, x_2 \in \left\{ a,b \right\}^*$ such that $f_{x_1}(0^m) \not = f_{x_2}(0^m)$ the automaton cannot remember words $x_1, x_2$ in the same state because there exists a suffix $x' \in \left\{ a,b \right\}^*$ such that $f_{x_1 x'}(0^m) = 0^m$, but $f_{x_2 x'}(0^m) \not = 0^m$ and therefore $x_1 x' \in L_{k,m}$, but $x_2 x' \notin L_{k,m}$. Therefore the automaton needs at least $k^m$ states.
 \qed
 \end{proof}
 
-%TODO: veel teoreemas
+
+
+\begin{theorem}
+For every prime $p$ there is a $p$-ultrametric finite automaton recognizing $L_{k,m}$ with $k \cdot m$ states.
+\end{theorem}
+\begin{proof}
+The automaton has states $w_i^s$ where $i \in \{1, \ldots, m\}$, $s \in \{0, \ldots, k-1\}$.
+$w_i^0$ are starting states with amplitude $1$ and they are also the accepting states.
+
+The automaton is constructed in such way that after reading $x$ the automaton has amplitude $1$ in the state $w_i^s$ if $f_x(0^m)_i = s$ and amplitude $0$ in all other $w_i^t$ ($t \not = s$).
+
+If the sum of the norms of the amplitudes in the accepting states is at least $m$ then the word is accepted, otherwise rejected.
+
+See figure \ref{autom1}.
+\qed
+\end{proof}
+
+\begin{figure}[H]
+  \centering
+  %\includegraphics[width = 8cm, bb= 0 0 398 299]{autom_km.png}
+  \includegraphics[width = 8cm]{autom_km.png}
+  \caption{Ultrametric automaton accepting $L_{k,m}$ with $k \cdot m$ states.
+  Double circled states are accepting.
+  Bold arrows show starting states.
+  Solid lines are $a$-transitions, dashed lines are $b$-transitions.
+  All transitions have amplitude 1. }
+  \label{autom1}
+\end{figure}
+
+We can do even better if we use the ultrametric properties of the automaton.
+
+\begin{theorem}
+For every prime $p > m$ there is a $p$-ultrametric finite automaton recognizing $L_{p,m}$ with $m+1$ states.
+\end{theorem}
+\begin{proof}
+The automaton has states $w_i$ where $i \in \{1, \ldots, m\}$ and a starting state "$1$" which has always amplitude $1$.
+The automaton is constructed in such way that after reading word $x$ the state $w_i$ contains an amplitude divisible by $p$ iff $f_x(0^m)_i = 0$.
+Therefore, if $x \in L$ the sum of norms of the amplitudes of the accepting states is less than $m \cdot p^{-1}$. Otherwise that sum is greater than $1$.
+
+See figure \ref{autom2}.
+\qed
+\end{proof}
+
+
+\begin{figure}[H]
+  \centering
+  % \includegraphics[width = 8.4cm, bb= 0 0 415 160]{autom_m1.png}
+  \includegraphics[width = 8.4cm]{autom_m1.png}
+  \caption{$p$-ultrametric automaton accepting $L_{p,m}$ with $m$ states.
+  Double circled states are accepting.
+  Bold arrow shows the starting state.
+  Solid lines are $a$-transitions, dashed lines are $b$-transitions.
+  All transitions have amplitude 1. }
+  \label{autom2}
+\end{figure}
+
+
+\begin{theorem}
+(1) If a language $M$ is recognized by a regulated ultrametric finite automaton then $M$ is regular.\\
+(2) For arbitrary prime number $p$ there is a constant $c_p$ such that if a language $M$ is recognized by a regulated $p$-ultrametric finite automaton with $k$ states then there is a deterministic finite automaton with $(c_p)^{k\dot \log k}$ states recognizing the language $M$.
+\end{theorem}
+\begin{proof}
+If the automaton is regulated then, for arbitrary input word $x$, the norm  $\mid \gamma \mid _p$ is in the interval 
+$\lambda -c < \mid\gamma \mid _p < \lambda +c$. This means that there is only a finite number of possible values of the amplitudes of 
+the accepting states. Namely, the amplitude of each accepting state can take no more than $p^{const}$ values, and there is a constant $d$ such that
+only the last $d$ digits of the amplitudes (being $p$-adic numbers) of these states can influence  the norm.
+
+Since amplitudes after each step
+of the computation are calculated as elements of a matrix product, and the elements of the matrices are $p$-adic numbers, only the
+ last $d$ digits of the amplitudes of all the states can influence the result. Hence all the information about any initial fragment of 
+ the input word is encoded in the last $d$ digits of the amplitudes of all the states. No more than 
+ $(c_p)^{k\log k}$ possibilities can be distinguished. \qed
+\end{proof}
+
+
+\begin{thebibliography}{99}
+
+\bibitem{DD09}
+Branko Dragovich and Alexandra Dragovich.
+A p-Adic Model
+of DNA Sequence and Genetic Code.
+{\em p-Adic Numbers, Ultrametric Analysis, and Applications,}
+vol. 1, No 1, 34--41, 2009
+
+\bibitem{H01}
+Mika Hirvensalo.
+{\em Quantum Computing.} Springer-Verlag, Berlin-Heidelberg,  2001.
+
+\bibitem{Kh97}
+Andrei Yu. Khrennikov.
+{\em Non–Archimedean Analysis: Quantum Paradoxes, Dynamical Systems and
+Biological Models,} Kluwer Academic Publishers, 1997.
+	
+\bibitem{K06}
+Sergey V. Kozyrev. 
+Ultrametric Analysis and Interbasin Kinetics.
+{\em p-Adic Mathematical Physics,} Proc. of the 2nd International Conference on p-Adic 
+Mathematical Physics, American Institute Conference Proceedings,
+vol. 826, pp. 121--128, 2006.
+
+\bibitem{T69}
+Paavo Turakainen.
+Generalized Automata and Stochastic Languages.
+{\em Proceedings of the American Mathematical Society,} vol. 21, No. 2, pp. 303--309, 1969.
+
+\bibitem{VVZ95}
+V. S. Vladimirov, I. V. Volovich and E. I. Zelenov.
+{\em p-Adic Analysis and Mathematical Physics} 
+World Scientific, Singapore, 1995. 
+
+\end{thebibliography}
+
 
 \end{document}
