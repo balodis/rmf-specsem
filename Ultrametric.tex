@@ -191,6 +191,23 @@ Paavo Turakainen considered various generalizations of finite probabilistic auto
 
 However, it is needed to note that if there is only one accepting state then the possible probabilities of acceptance are discrete values $0$, $p^1$, $p^{-1}$, $p^2$, $p^{-2}$, $p^3$, $p^{-3}$, $\cdots $. Hence there is no natural counterpart of {\em isolated cut-point} or {\em bounded error} for ultrametric machines. On the other hand, a counterpart of Turakainen's theorem for isolated cut-point still does not exist. We also did not succeed to prove such a theorem for ultrametric automata. Most probably, there are certain objective difficulties.
 
+\begin{definition}
+A finite $p$-ultrametric automaton is a sextuple $\langle \Sigma, S, s_0, \delta, A, \lambda \rangle$, where
+\begin{itemize}
+  \item $\Sigma$ is a finite set -- the input alphabet,
+  \item $S$ is a finite set -- the set of states of the automaton,
+  \item $s_0:S \rightarrow Q_p$ is the initial state,
+  \item $\delta: \Sigma \times S \times S \rightarrow Q_p$ is the transition function; after reading letter $\sigma$ the automaton transitions from state $s(x)$ to state $s_\sigma(y):=\sum_{x\in S}{s(x)\cdot \delta(\sigma, x, y)}$,
+  \item $A \subseteq S$ is the set of accepting states,
+  \item $\lambda$ is the threshold of acceptance.
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+We say that a finite $p$-ultrametric automaton {\bf recognizes} language $L$ if for any word $w$ in the input alphabet $w \in L$ if and only if after reading the word $\sum_{x \in A}{\left|s_w(x)\right|_p} > \lambda$.
+\end{definition}
+
+It is sometimes useful to describe a state of the automaton as an $|S|$-dimensi\-onal row vector $s$ and the transition function as a set of $|\Sigma|$ matrices $\{A_\sigma\}$ with $(A_\sigma)_{xy}=\delta(\sigma, x, y)$. Then the state after reading the word $\sigma_1\sigma_2\ldots \sigma_n$ is simply $s_0\cdot M_{\sigma_1} \cdot M_{\sigma_2} \cdot \ldots \cdot M_{\sigma_n}$.
 
 \begin{definition}
 Finite $p$-ultrametric automaton is called {\bf integral} if all the parameters of it are $p$-adic integers.
@@ -215,7 +232,7 @@ For every state of the automaton we add its duplicate. If the given state has an
 \end{comment}
 
 \begin{definition}
-An integral finite ultrametric automaton is called {\bf regulated} if there exist constants $c > 0$ and $\lambda $ such that for arbitrary input word $x$ the norm 
+A finite ultrametric automaton is called {\bf regulated} if there exist constants $c > 0$ and $\lambda $ such that for arbitrary input word $x$ the norm 
 $0 < \lambda -c < |\gamma |_p < \lambda +c$. 
 \end{definition}
 
