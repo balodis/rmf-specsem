@@ -39,7 +39,7 @@ R\= usi\c n\v s Freivalds}
 \maketitle
 
 \begin{abstract}  
-We introduce a notion of ultrametric finite automata using $p$-adic numbers to describe random branching of the process of computation. These automata have properties similar to the properties of probabilistic automata but the descriptional power of probabilistic automata and ultrametric automata can differ very much.
+We investigate ultrametric finite automata using $p$-adic numbers to describe random branching of the process of computation. These automata have properties similar to the properties of probabilistic automata but the descriptional power of probabilistic automata and ultrametric automata can differ very much.
 \end{abstract} 
 
 
@@ -75,8 +75,6 @@ However, there is an important feature that distinguishes $p$-adic numbers from 
 $p$-adic numbers cannot be linearly ordered. This is why {\em valuations} of $p$-adic numbers are considered. 
 
 The situation is similar in Quantum Computation. Quantum amplitudes are complex numbers which also cannot be linearly ordered. The counterpart of valuation for quantum algorithms is {\em measurement} translating a complex number $a + bi$ into a real number $a^2 + b^2$. Valuations of $p$-adic numbers are rational numbers.
-
-Ultrametric finite automata and ultrametric Turing machines are reasonably similar to probabilistic finite automata and Turing machines. 
 
 \section{$p$-adic numbers}
 
@@ -163,7 +161,6 @@ Let $p$ be any prime number. For any nonzero integer $a$, let the $p$-adic ordin
 \end{definition}
 
 For example, the 7-adic valuation of 7 is 1. That of 14 is also 1, as are those of 21, 28, 35, 42 or 56. The 7-adic valuation of 49, on the other hand, is 2, as is that of 98. And the 7-adic valuation of 343 is 3. The 2-adic valuation of an integer is 0 iff it is odd, it is at least 1 iff it is even, at least 2 iff the integer is multiple by 4, and so on. The 7-adic valuation of $\frac{1}{7}$ is -1, and so are those of $\frac{3}{7}$, $\frac{1}{14}$, $\frac{5}{56}$. The 7-adic valuation of $\frac{1}{2}$ or $\frac{8}{3}$ is 0. The 7-adic valuation of $\frac{7}{3}$ or $\frac{14}{5}$ is 1. The 7-adic valuation of $\frac{48}{49}$ is -2.
-We now define the $p$-adic absolute value (or $p$-norm) of a rational number $r$ to be $|r|_p = p^{-ord_p r}$. For example, $|p|_p = \frac{1}{p} , |1|_p = 1, |2p|_p = \frac{1}{p}$ ( if $p$ is odd), and $|\frac{1}{p^2}| = p^2$.
 
 \begin{definition}
 Let $p$ be any prime number. For arbitrary rational number $x$, its {\em $p$-norm} is:
@@ -173,6 +170,8 @@ Let $p$ be any prime number. For arbitrary rational number $x$, its {\em $p$-nor
 \end{cases}\]
 \end{definition}
 
+For example, $|p|_p = \frac{1}{p} , |1|_p = 1, |2p|_p = \frac{1}{p}$ ( if $p$ is odd), and $|\frac{1}{p^2}| = p^2$.
+
 It is easy to see that the valuation of a $p$-adic number $(a_i)$ is the greatest $i_0$ such that $a_i = 0$ for all $i < i_0$. Hence a $p$-adic integer is exactly a $p$-adic number with non negative valuation. And a small $p$-adic integer (one which ends in 0) is one whose valuation is (strictly) positive. It is not hard to check that this definition coincides with the aforementioned one for integers, hence for rationals. As for rationals, we define the $p$-adic absolute value and distance by $|\alpha |_p = p^{- ord_p \alpha }$. Note that the $p$-adic absolute value of a $p$-adic number is a real number (it is also a $p$-adic, and in fact a rational, but ought not to be considered as such).
 
 Every rational number is a $p$-adic number for some prime number $p$. The nature of irrational numbers is more complicated. For instance, $\sqrt{2}$ just does not exist as a $p$-adic number. On the other hand, there is a of continuum of $p$-adic numbers that are not real numbers. Also, for different primes $p_1$, $p_2$ there is a continuum of $p_1$-adic numbers not being $p_2$-adic numbers, and vice versa.
@@ -180,7 +179,7 @@ Every rational number is a $p$-adic number for some prime number $p$. The nature
 \section{$p$-adic automata}
 
 
-The notion of $p$-adic numbers widely used in mathematics but not so much in Computer Science. The aim of our next sections is to show that the notion of ultrametric automata and ultrametric Turing machines is natural. 
+The notion of $p$-adic numbers is widely used in mathematics but not so much in Computer Science. The aim of our next sections is to show that the notion of ultrametric automata is natural. 
 
 In mathematics, a stochastic matrix  is a matrix used to describe the transitions of a Markov chain. A {\em right stochastic matrix}  is a square matrix each of whose rows consists of nonnegative real numbers, with each row summing to 1. A {\em stochastic vector} is a vector whose elements consist of nonnegative real numbers which sum to 1. The {\em finite probabilistic automaton} is defined as an extension of a non-deterministic finite automaton $(Q,\Sigma,\delta,q_0,F)$,  with the initial state $q_0$ replaced by a stochastic vector giving the probability of the automaton being in a given initial state, and with stochastic matrices corresponding to each symbol in the input alphabet describing the state transition probabilities. It is important to note that if $A$ is the stochastic matrix corresponding to the input symbol $a$ and $B$ is the stochastic matrix corresponding to the input symbol $b$, then the product $AB$ describes the state transition probabilities when the automaton reads the input word $ab$. Additionally, the probabilistic automaton has a threshold $\lambda $ being a real number between 0 and 1. If the probabilistic automaton has only one {\em final state} then the input word $x$ is said to be accepted if after reading $x$ the probability of the final state has a probability exceeding $\lambda $. If there are several final states, the word $x$ is said to be accepted if the total of probabilities of the final states exceeds $\lambda $.
 
@@ -202,17 +201,17 @@ A finite $p$-ultrametric automaton is a sextuple $\langle S, \Sigma, s_0, \delta
   \item $\Lambda = \left( \lambda, \diamond \right)$ is the acceptance condition where $\lambda \in \mathbb{R}$ is the acceptance threshold and $\diamond \in \left\{ \leq, \geq \right\}$.
 \end{itemize}
 The automaton works as follows.
-In every timestep each of its states has an associated $p$-adic number called its amplitude.
+At every timestep each of its states has an associated $p$-adic number called its amplitude.
 The automaton starts with the initial amplitude distribution $s_0$.
 Then it proceeds by processing input word's $w = w_1 \ldots w_n$ symbols one by one.
-The amplitude distribution after processing the $i$-th symbol is denoted as $s_i$.
-$s_i(y) = \sum_{x \in S}{s_{i-1}(x) \cdot \delta \left( w_i, x, y \right) }$.
+The amplitude distribution after processing the $i$-th symbol is denoted as $s_i$, with
+$s_i(y) = \sum_{x \in S}{s_{i-1}(x) \cdot \delta \left( w_i, x, y \right) }$ for every $y \in S$.
 After the $n$-th symbol, in the same way the end marker $\$$ is processed obtaining the final amplitude distribution $s_{n+1}$.
 If the sum of the $p$-norms of final amplitudes over final states is at least (or at most) the threshold, i.e., if $\sum_{x \in F}{\left| s_{n+1}(x) \right|_p} \diamond \lambda$, then the word $w$ is said to be accepted, otherwise -- rejected.
 \end{definition}
 
 \begin{definition}
-We say that a finite $p$-ultrametric automaton {\bf recognizes} language $L \subseteq \Sigma^{*}$ if for any word $w \in  \Sigma^{*}$ it is accepted if and only if $w \in L$.
+We say that a finite $p$-ultrametric automaton {\bf recognizes} language $L \subseteq \Sigma^{*}$ if any word $w \in  \Sigma^{*}$ is accepted if and only if $w \in L$.
 \end{definition}
 
 It is sometimes useful to describe a state of the automaton as an $|S|$-dimensi\-onal row vector $s$ and the transition function as a set of $|\Sigma|$ matrices $\{A_\sigma\}$ with $(A_\sigma)_{xy}=\delta(\sigma, x, y)$. Then the state after reading the word $\sigma_1\sigma_2\ldots \sigma_n$ is simply $s_0\cdot M_{\sigma_1} \cdot M_{\sigma_2} \cdot \ldots \cdot M_{\sigma_n}$.
@@ -242,7 +241,7 @@ For every state of the automaton we add its duplicate. If the given state has an
 \begin{definition}
 A state of a $p$-ultrametric automaton is called {\bf regulated} if there exist constants $\rho$, $c$ such that for every input word the $p$-norm of amplitude $\gamma$ of this state is bounded by $0 < \rho -c < |\gamma |_p < \rho +c$.
 
-A finite $p$-ultrametric automaton is called {\bf regulated} if all of its states are regulated.
+A finite $p$-ultrametric automaton is called {\bf regulated} if all of its states are regulated (it is not required for the constants $\rho$ and $c$ to be the same for all states).
 \end{definition}
 
 We show a gap between state complexity of deterministic and ultrametric automata.
@@ -274,7 +273,7 @@ For every words $x_1, x_2 \in \left\{ a,b \right\}^*$ such that $f_{x_1}(0^m) \n
 
 
 \begin{theorem}
-For every prime $p$ there is a $p$-ultrametric finite automaton recognizing $L_{k,m}$ with $k \cdot m$ states.
+For every prime $p$ there is an integral $p$-ultrametric finite automaton recognizing $L_{k,m}$ with $k \cdot m$ states.
 \end{theorem}
 \begin{proof}
 The automaton has states $w_i^s$ where $i \in \{1, \ldots, m\}$, $s \in \{0, \ldots, k-1\}$.
@@ -303,7 +302,7 @@ See figure \ref{autom1}.
 We can do even better if we use the ultrametric properties of the automaton.
 
 \begin{theorem}
-For every prime $p > m$ there is a $p$-ultrametric finite automaton recognizing $L_{p,m}$ with $m+1$ states.
+For every prime $p > m$ there is an integral $p$-ultrametric finite automaton recognizing $L_{p,m}$ with $m+1$ states.
 \end{theorem}
 \begin{proof}
 The automaton has states $w_i$ where $i \in \{1, \ldots, m\}$ and a starting state "$1$" which has always amplitude $1$.
@@ -358,7 +357,7 @@ Mika Hirvensalo.
 
 \bibitem{Kh97}
 Andrei Yu. Khrennikov.
-{\em Non–Archimedean Analysis: Quantum Paradoxes, Dynamical Systems and
+{\em Nonï¿½Archimedean Analysis: Quantum Paradoxes, Dynamical Systems and
 Biological Models,} Kluwer Academic Publishers, 1997.
 	
 \bibitem{K06}
