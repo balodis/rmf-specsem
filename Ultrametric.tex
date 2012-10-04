@@ -261,12 +261,32 @@ $$
 L_{k,m} = \left\{ x \in \left\{ a, b \right\}^* \left| f_x(0^m) = 0^m \right.  \right\}
 $$
 
+\begin{lemma} \label{lemma1}
+For every word $w = \left( w_1, \ldots, w_m \right) \in \left\{ 0, 1, \ldots, k-1 \right\} ^ m$ there exists a word $x \in \left\{ a, b \right\}$ such that $f_x \left( w \right) = \left( 0^m \right)$.
+\end{lemma}
+\begin{proof}
+We construct $x$ in the following way:
+\begin{itemize}[label={}]
+	\item $x := ""$
+	\item for $i := 1$ to $m$
+	\begin{itemize}[label={}]
+		\item if $w_i > 0$
+		\begin{itemize}[label={}]
+			\item append $k - w_1$ $a$'s at the end of $x$
+		\end{itemize}
+		\item endif
+		\item append $b$ at the end of $x$
+	\end{itemize}
+\item endfor
+\end{itemize}
+\qed
+\end{proof}
 
 \begin{theorem}
 Every deterministic finite automaton recognizing $L_{k,m}$ needs at least $k^m$ states.
 \end{theorem}
 \begin{proof}
-For every words $x_1, x_2 \in \left\{ a,b \right\}^*$ such that $f_{x_1}(0^m) \not = f_{x_2}(0^m)$ the automaton cannot remember words $x_1, x_2$ in the same state because there exists a suffix $x' \in \left\{ a,b \right\}^*$ such that $f_{x_1 x'}(0^m) = 0^m$, but $f_{x_2 x'}(0^m) \not = 0^m$ and therefore $x_1 x' \in L_{k,m}$, but $x_2 x' \notin L_{k,m}$. Therefore the automaton needs at least $k^m$ states.
+For every words $x_1, x_2 \in \left\{ a,b \right\}^*$ such that $f_{x_1}(0^m) \not = f_{x_2}(0^m)$ the automaton cannot remember words $x_1, x_2$ in the same state because there exists a suffix $x' \in \left\{ a,b \right\}^*$ such that $f_{x_1 x'}(0^m) = 0^m$, but $f_{x_2 x'}(0^m) \not = 0^m$ and therefore $x_1 x' \in L_{k,m}$, but $x_2 x' \notin L_{k,m}$. We construct such a $x'$ by using the algorithm described in the proof of Lemma \ref{lemma1}. Since there is a total of $k^m$ possible words $w$ the automaton needs at least $k^m$ states.
 \qed
 \end{proof}
 
